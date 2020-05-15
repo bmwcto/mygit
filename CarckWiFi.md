@@ -61,5 +61,7 @@ TP-LINK_4275
 80:8F:1D:83:42:76
 90:AD:F7:FA:8E:10
 
-### 7. 示例 监听 `wlan1mon` 信号为 `CMCC-pbHs` 信道为 `11` 无线路由（AP）的MAC为 `AC:5A:EE:D3:FC:C0` 包保存到 `CMCC-pbHs.ivs` 文件
+### 7. 示例 
+监听 `wlan1mon` 信号为 `CMCC-pbHs` 信道为 `11` 无线路由（AP）的MAC为 `AC:5A:EE:D3:FC:C0` 包保存到 `CMCC-pbHs.ivs` 文件
+
 `sudo airodump-ng wlan1mon --essid CMCC-pbHs -c 11 --bssid AC:5A:EE:D3:FC:C0 --ivs -w CMCC-pbHs`
