@@ -3,6 +3,7 @@
 ## update by myphone test
 ## Test my ssh login
 ## test my ssh mi6
+## test my ssh mi6 again
 ## Test proxy socks5 for ssh(git)
  ```bash
 $ cat ~/.ssh/config
