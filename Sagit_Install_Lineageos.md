@@ -15,10 +15,10 @@
 ### 3. 刷入fireware、lineage、opengapps、magisk
 - 因每次sideload后都会自动退出 ADB Sideload，所以以下每次执行都需要，<kbd>TWRP主界面</kbd>-><kbd>Advanced</kbd>-><kbd>ADB Sideload</kbd>（划过滑条即可）
 
-    2020-05-17 01:18 adb sideload fw_sagit_miui_MI6_20.4.30_1f77f6d5fe_9.0.zip
-    2020-05-17 01:19 adb sideload lineage-17.1-20200428-nightly-sagit-signed.zip
-    2020-05-17 01:21 adb sideload open_gapps-arm64-10.0-nano-20200516.zip
-    2020-05-17 01:23 adb sideload Magisk-v20.4.zip
+        2020-05-17 01:18 adb sideload fw_sagit_miui_MI6_20.4.30_1f77f6d5fe_9.0.zip
+        2020-05-17 01:19 adb sideload lineage-17.1-20200428-nightly-sagit-signed.zip
+        2020-05-17 01:21 adb sideload open_gapps-arm64-10.0-nano-20200516.zip
+        2020-05-17 01:23 adb sideload Magisk-v20.4.zip
 
 ### 4. 重启并跳过导向
 - 开机第一屏，语言选择界面，顺时针点击屏幕白色区域四个角，即可跳过向导（Google的联网检查）
