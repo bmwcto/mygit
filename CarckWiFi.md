@@ -68,7 +68,8 @@ TP-LINK_4275
 
 
 ### 8. 用脚本生成字典
-bash ./p3.sh >p.txt
+
+`bash ./p3.sh >p.txt`
 
 ```bash
 $ cat p3.sh
