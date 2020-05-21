@@ -44,11 +44,11 @@
 
     再用 hashcat 跑8位的纯数字密码（进度可以按s查看）
     
-    `hashcat -m 2500 -a 3 wifipass.hccap ?d?d?d?d?d?d?d?d`
+    `hashcat -m 2500 -a 3 --force wifipass.hccap "?d?d?d?d?d?d?d?d"`
 
     hashcat 字典模式
     
-    `hashcat -m 2500 wifipass.hccap dict.txt`
+    `hashcat -m 2500 --force wifipass.hccap dict.txt`
 
     用 crunch 生成8位和9位的纯数字字典（第1个8为最少8位，第2个9为最多9位）
     
@@ -65,3 +65,25 @@ TP-LINK_4275
 监听 `wlan1mon` 信号为 `CMCC-pbHs` 信道为 `11` 无线路由（AP）的MAC为 `AC:5A:EE:D3:FC:C0` 包保存到 `CMCC-pbHs.ivs` 文件
 
 `sudo airodump-ng wlan1mon --essid CMCC-pbHs -c 11 --bssid AC:5A:EE:D3:FC:C0 --ivs -w CMCC-pbHs`
+
+
+### 8. 用脚本生成字典
+
+```bash
+$ cat p2.sh
+for a in test Test TEST
+do
+        for b in 13800138000 18901234567 19880808
+        do 
+                for c in . @
+                do
+                        echo $a$b$c
+                        echo $a$c$b
+                        echo $b$c$a
+                        echo $b$a$c
+                        echo $c$a$b
+                        echo $c$b$a
+                done
+        done
+done
+```
