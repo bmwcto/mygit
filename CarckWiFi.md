@@ -68,9 +68,10 @@ TP-LINK_4275
 
 
 ### 8. 用脚本生成字典
+bash ./p3.sh >p.txt
 
 ```bash
-$ cat p2.sh
+$ cat p3.sh
 for a in test Test TEST
 do
         for b in 13800138000 18901234567 19880808
