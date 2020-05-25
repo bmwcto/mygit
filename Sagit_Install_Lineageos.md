@@ -43,5 +43,7 @@
 - 无法切换至SIM卡的NFC（例如sim卡的公交卡）
 - 双卡铃声无法单独设置（两个sim卡来电同一铃声）
 - 自带拨号器的通话录音无法自动录音（我用[第三方](https://gitlab.com/axet/android-call-recorder)解决）
+- 自带拨号器没有T9拼音快速拨号功能（找替代品比较困难）
+- 自带拨号器无法显示来去电或未接电话的详细信息（例如具体时间）
 
 参考 [2020年 小米6 刷机 LineageOS 17.1 Official](https://ericclose.github.io/Install-LineageOS-on-sagit.html)
