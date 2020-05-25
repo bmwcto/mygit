@@ -38,5 +38,10 @@
 - [Magisk-v20.4.zip](https://github.com/topjohnwu/Magisk/releases)
 
 
+### 已知问题
+- 无法使用人脸识别解锁（听说是漏洞和侵权造成的）
+- 无法切换至SIM卡的NFC（例如sim卡的公交卡）
+- 双卡铃声无法单独设置（两个sim卡来电同一铃声）
+- 自带拨号器的通话录音无法自动录音（我用[第三方](https://gitlab.com/axet/android-call-recorder)解决）
 
 参考 [2020年 小米6 刷机 LineageOS 17.1 Official](https://ericclose.github.io/Install-LineageOS-on-sagit.html)
