@@ -28,6 +28,7 @@
 - 长按电源键开手电筒：在<kbd>Settings 设置</kbd>-><kbd>System 系统</kbd>-><kbd>Buttons 按键</kbd>-><kbd>长按打开手电筒</kbd>
 
 ### 附录
+- [MIUI线刷](https://www.miui.com/shuaji-393.html)
 - [sagit_images_V11.0.5.0.PCACNXM_20200305.0000.00_9.0_cn](https://update.miui.com/updates/v1/fullromdownload.php?d=sagit&b=F&r=cn&n=)
 - [recovery twrp-3.3.1-sagit-20191204.img](https://github.com/xiaomi-msm8998/twrp_device_xiaomi_sagit/releases)
 - [fw_sagit_miui_MI6_20.4.30_1f77f6d5fe_9.0.zip](https://github.com/XiaomiFirmwareUpdater/firmware_xiaomi_sagit/releases/)
