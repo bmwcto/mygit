@@ -1,4 +1,8 @@
 # mygit
+克隆到本地
+
+`git clone git@github.com:bmwcto/mygit.git`
+
 ## update by myphone
 ## update by myphone test
 ## Test my ssh login
