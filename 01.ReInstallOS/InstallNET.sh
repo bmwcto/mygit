@@ -5,6 +5,7 @@
 ## Written By MoeClub.org
 ## bash InstallNET.sh -c 6.10 -v 64 -a --mirror 'https://mirrors.tuna.tsinghua.edu.cn/centos'
 ## bash InstallNET.sh -d 10 -v 64 -a --mirror 'https://mirrors.tuna.tsinghua.edu.cn/debian'
+## bash <(wget --no-check-certificate -qO- 'https://git.io/Jfybk') -d 10 -v 64 -a
 
 export tmpVER=''
 export tmpDIST=''
