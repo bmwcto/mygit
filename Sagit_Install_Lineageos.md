@@ -37,6 +37,15 @@
 - [open_gapps-arm64-10.0-nano-20200516.zip](https://opengapps.org/)
 - [Magisk-v20.4.zip](https://github.com/topjohnwu/Magisk/releases)
 
+- [Windows adb](https://dl.google.com/android/repository/platform-tools_r30.0.2-windows.zip)
+- [小米手机 Windows 驱动](http://bigota.d.miui.com/tools/xiaomi_usb_driver.rar)
+- [安装原始设备制造商 USB 驱动程序](https://developer.android.com/studio/run/oem-usb?hl=zh-cn)
+
+
+### 其它问题
+
+- Wi-Fi 显示受限的解决方案（Crdroid上遇到的）
+ `adb shell settings put global captive_portal_https_url https://www.google.cn/generate_204`
 
 ### 已知问题
 - 无法使用人脸识别解锁（听说是漏洞和侵权造成的）
