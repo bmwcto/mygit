@@ -263,7 +263,7 @@ install_mbedtls() {
 install_shadowsocks(){
     ##install_libsodium
     ##install_mbedtls
-
+    apt install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev libc-ares-dev automake libmbedtls-dev libsodium-dev
     ldconfig
     cd ${cur_dir}
     tar zxf ${shadowsocks_libev_ver}.tar.gz
