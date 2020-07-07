@@ -3,8 +3,10 @@
 ### 安装：
 `curl -fsSL https://filebrowser.org/get.sh | bash`
 
-### 运行：
+### 临时运行：
 `nohup /usr/local/bin/filebrowser -r /root/upload -p 7890 -a 0.0.0.0 >>/root/upload/flog.log 2>&1 &`
+
+- 默认用户名和密码都是 `admin`
 
 ### 开机服务：
 `vim /usr/lib/systemd/system/fbro.service`
