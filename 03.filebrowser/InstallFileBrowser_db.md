@@ -14,7 +14,7 @@
 	```
 	cd /home/fbro/config
 
-	filebrowser config init --locale "zh-cn" --commands "cat ls pwd cp vim wget curl mkdir free du df fdisk" --branding.name "BMWCTO" -a 0.0.0.0 -p 7890 -r /home/fbro/upload -l /home/fbro/config/fbro.log --perm.admin
+	filebrowser config init --locale "zh-cn" --commands "cat ls pwd cp vim wget curl mkdir free du df fdisk uptime uname mv tar unzip apt date" --branding.name "BMWCTO" -a 0.0.0.0 -p 7890 -r /home/fbro/upload -l /home/fbro/config/fbro.log --perm.admin
 
 	filebrowser users add myadmin mypassword --locale "zh-cn" --perm.admin
 	```
