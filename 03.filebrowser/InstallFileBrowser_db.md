@@ -14,12 +14,14 @@
 	```
 	cd /home/fbro/config
 
-	filebrowser config init --locale "zh-cn" --commands "cat ls pwd cp vim wget curl mkdir free du df fdisk uptime uname mv tar unzip apt date" --branding.name "BMWCTO" -a 0.0.0.0 -p 7890 -r /home/fbro/upload -l /home/fbro/config/fbro.log --perm.admin
+	filebrowser config init --locale "zh-cn" --commands "cat ls pwd cp vim wget curl mkdir free du df fdisk uptime uname mv tar unzip apt date last lastb head tail grep git" --branding.name "BMWCTO" -a 0.0.0.0 -p 7890 -r /home/fbro/upload -l /home/fbro/config/fbro.log --perm.admin
 
 	filebrowser users add myadmin mypassword --locale "zh-cn" --perm.admin
 	```
 	
 	`说明：进入 config 目录后；配置默认为 中文，允许执行 cat 等shell，改网站显示名为 BMWCTO ，监听地址为 0.0.0.0，端口为 7890，主目录为 upload，日志路径为 fbro.log，用户为管理员权限；添加用户名为 myadmin 密码为 mypassword 的 中文 管理员 用户；并在 config 目录生成了 filebrowser.db 数据库。`
+
+	`.*` 表示可执行[所有SHELL命令](https://github.com/filebrowser/filebrowser/issues/654)，但对SHELL的支持度不够高。
 - 临时运行：`filebrowser -d /home/fbro/config/filebrowser.db`
 
 ### 开机服务：
