@@ -23,3 +23,8 @@ get_latest_version_v5=$(curl -L -s -H 'Accept: application/json' https://github.
 # 若未安装，就直接跳到安装最新版本
 # 若已安装，就对比版本号，版本号不一致则安装最新版本，版本号一致则跳过安装，直接输出 log 为 SSlibev installed。
 
+mkdir -p ~/build-area/
+cp ./scripts/build_deb.sh ~/build-area/
+cd ~/build-area
+apt install -y sudo
+./build_deb.sh
