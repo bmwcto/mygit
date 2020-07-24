@@ -23,6 +23,7 @@
 
 	`.*` 表示可执行[所有SHELL命令](https://github.com/filebrowser/filebrowser/issues/654)，但对SHELL的支持度不够高。
 - 临时运行：`filebrowser -d /home/fbro/config/filebrowser.db`
+- 配置SSL证书：`filebrowser -d /home/fbro/config/filebrowser.db config set --cert /home/fbro/config/cert1.pem --key /home/fbro/config/privkey1.pem`
 
 ### 开机服务：
 `vim /usr/lib/systemd/system/fbro.service`
