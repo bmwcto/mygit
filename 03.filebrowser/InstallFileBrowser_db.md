@@ -23,7 +23,15 @@
 
 	`.*` 表示可执行[所有SHELL命令](https://github.com/filebrowser/filebrowser/issues/654)，但对SHELL的支持度不够高。
 - 临时运行：`filebrowser -d /home/fbro/config/filebrowser.db`
-- 配置SSL证书：`filebrowser -d /home/fbro/config/filebrowser.db config set --cert /home/fbro/config/cert1.pem --key /home/fbro/config/privkey1.pem`
+- 配置SSL证书：`filebrowser -d /home/fbro/config/filebrowser.db config set --cert /home/fbro/config/fullchain.pem --key /home/fbro/config/privkey1.pem`
+- 证书相关附录：
+	|文件名|内容|
+	|:----|:----|
+	|cert.pem|服务端证书|
+	|chain.pem|浏览器需要的所有证书但不包括服务端证书，比如根证书和中间证书|
+	|fullchain.pem|包括了cert.pem和chain.pem的内容|
+	|privkey.pem|证书的私钥|
+
 
 ### 开机服务：
 `vim /usr/lib/systemd/system/fbro.service`
