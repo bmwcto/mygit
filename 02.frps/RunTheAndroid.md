@@ -5,7 +5,7 @@
 - [去F-Droid下载](https://f-droid.org/packages/com.termux/)
 - 安装一些常用软件  
     `pkg install -y openssh vim aria2 curl wget dnsutils tracepath tree`
-- 给个本地文件权限
+- 给个本地文件权限  
     `termux-setup-storage`
 - 改个密码  
     `passwd`
