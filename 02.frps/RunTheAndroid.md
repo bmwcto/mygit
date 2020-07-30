@@ -57,3 +57,7 @@
 - log若出现以下红色字样，应该属于网络不稳定，多等等或换FRP服务器  
     `[control.go:157] [678440135bbaa784] work connection closed before response StartWorkConn message: EOF`
 - 同一SESSION内的SSHD才能流畅或者说不要切Termux的SESSION
+
+- 参考链接  
+    [Termux Remote Access](https://wiki.termux.com/wiki/Remote_Access#Using_the_SSH_server)  
+    [FRP Readme](https://github.com/fatedier/frp/blob/master/README_zh.md)
