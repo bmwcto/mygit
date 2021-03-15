@@ -42,7 +42,7 @@ k2Ve29BxonbkwRr/6XLogOlvxdGuHCcoHWaCzBCbJXE=
 
 也就是说，任一端只有另对方的公钥和自己的私钥。
 
-服务器（192.168.1.11）配置如下：
+服务器（192.168.1.11）配置 `/etc/wireguard/wg0.conf` 如下：
 ```
 [Interface]
 Address = 10.0.33.1/32
@@ -61,7 +61,7 @@ PublicKey = k2Ve29BxonbkwRr/6XLogOlvxdGuHCcoHWaCzBCbJXE=
 #2publickey
 ```
 
-客户端配置如下：
+客户端配置 `/etc/wireguard/wg0.conf` 如下：
 ```
 [Interface]
 Address = 10.0.33.4/32
@@ -70,11 +70,19 @@ PrivateKey = cDNgJrk0zAB3vCOWCfU6HdweHTc3IIkKZk+/1YPU0E0=
 #2privatekey
 
 [Peer]
-AllowedIPs = 10.0.33.0/24
+AllowedIPs = 10.0.33.0/24,192.168.1.0/24
 Endpoint = 192.168.1.11:3800
 PublicKey = QKzuDLnQt6c6+jsl/8s4Y3jZpXM3qP+axynZuOHzz0o=
 #1publickey
 ```
+
+### 3. 启动
+
+先后在服务器和客户端执行： `sudo wg-quick up wg0`
+
+查看状态：`wg`
+
+断开：`sudo wg-quick down wg0`
 
 加载内核：`sudo modprobe wireguard`
 
@@ -86,7 +94,7 @@ PublicKey = QKzuDLnQt6c6+jsl/8s4Y3jZpXM3qP+axynZuOHzz0o=
 
 应用并查询：`sysctl -p && sysctl net.ipv4.ip_forward`
 
-### 3. 附录
+### 4. 附录
 
 [在/boot/下放一个名为 ssh 的文件即可开启SSH登录](https://www.raspberrypi.org/documentation/remote-access/ssh/README.md)
  
