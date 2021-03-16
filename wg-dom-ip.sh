@@ -15,9 +15,9 @@ lastIp='no_ip'
 
 if test -f "$lastIpFile"
 then
-        lastIp="$(cat $SHELL_FOLDER/wg-dom-last-ip-$1)"   
+        lastIp="$(cat $lastIpFile)"   
 else 
-        echo 'no_ip' > $SHELL_FOLDER/wg-dom-last-ip-$1
+        echo 'no_ip' > $lastIpFile
 fi
 echo "old ip is:[ $lastIp ]"
 currentIp=$nsdomip
@@ -29,5 +29,5 @@ else
         
 sleep 10s
 systemctl restart wg-quick@$1> /dev/null
-echo "$currentIp" > $SHELL_FOLDER/wg-dom-last-ip-$1
+echo "$currentIp" > $lastIpFile
 fi
