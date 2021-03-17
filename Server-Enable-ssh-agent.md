@@ -41,5 +41,5 @@
         `systemctl --user start ssh-agent`
 
    - 原因很简单，所以结合了文章，在`~/.profile`添加了     
-     `export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"`；  
-     然后 `source ~/.profil` 加载一下就解决了。
+     `export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"`  
+     然后 `source ~/.profile` 加载一下就解决了。
