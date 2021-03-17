@@ -12,7 +12,7 @@
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 dom=$(grep -Ev "^$|[#;]" /etc/wireguard/$1.conf|awk '/Endpoint/{print $3}'|cut -d: -f1)
 #nsdomip=$(nslookup $dom 114.114.114.114|awk -F '[ ():]+' 'NR==6 {print $2}')
-pdomip=$(ping -c1 $dom|awk -F '[ ():]+' 'NR==2 {print $5}')
+pdomip=$(ping -c1 $dom|awk -F '[ ():]+' 'NR==1 {print $3}')
 
 lastIpFile=$SHELL_FOLDER/wg-dom-last-ip-$1
 lastIp='no_ip'
