@@ -9,10 +9,16 @@
 ## 改用Ping试试
 ## 2021-03-17 21:40:05 
 
+
+## 新增dig查询
+## 默认取第一个值
+## 2021-03-17 23:47:35 
+
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 dom=$(grep -Ev "^$|[#;]" /etc/wireguard/$1.conf|awk '/Endpoint/{print $3}'|cut -d: -f1)
 #nsdomip=$(nslookup $dom 114.114.114.114|awk -F '[ ():]+' 'NR==6 {print $2}')
 pdomip=$(ping -c1 $dom|awk -F '[ ():]+' 'NR==1 {print $3}')
+#Ddomip=$(dig $dom|awk '/^$dom/{print $5}'|head -n1)
 
 lastIpFile=$SHELL_FOLDER/wg-dom-last-ip-$1
 lastIp='no_ip'
