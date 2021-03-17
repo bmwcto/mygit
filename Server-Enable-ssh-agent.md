@@ -2,13 +2,14 @@
 
 ### 起因
 
-   - 我在Kali上面使用 `ssh-add ~/mykey` 或者 `ssh-add -L` 的时候一切正常，但SSH连上了Debian（Server)后再用却提示：
+   - 我在Kali上面使用 `ssh-add ~/mykey` 或者 `ssh-add -L` 的时候一切正常，但SSH连上了Debian（Server）后再用却提示：
 
         Could not open a connection to your authentication agent.
 
    - 然后我就迷茫了，经过搜索发现临时解决方案是：```eval `ssh-agent -s` ```
    - 可是，这真的只是临时的，临时到了你退出再登录SSH就不能用了，那这有什么意义？
-   - 原因是像文章里面说的，ssh-agent 是为图形界面服务的，但我想在我的家庭小服上使用（其实建议最好还是不要在服务器上使用，万一服务器被人拿下呢？）
+   - 原因是像文章里面说的，ssh-agent 是为图形界面服务的，但我想在我的家庭小服上使用  
+     （其实建议最好还是不要在服务器上使用，万一服务器被人拿下呢？）
    - 所以这时候我就接着摸索，有[一篇文章](https://blog.bitisle.net/2020/04/04/run-ssh-agent-ubuntu-server.html)和[一个问答](https://unix.stackexchange.com/questions/339840/how-to-start-and-use-ssh-agent-as-systemd-service)都写了解决方案;
    - 结合这两篇文章，我记录下来如何解决这个问题。
 
