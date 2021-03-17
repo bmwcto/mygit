@@ -44,3 +44,4 @@
    - 原因很简单，所以结合了文章，在`~/.profile`添加了     
      `export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"`  
      然后 `source ~/.profile` 加载一下就解决了。
+   - 由于我默认用的ZSH，所以添加在 `~/.profile` 是不管用的，需要添加在 `~/.zshrc` 里面才可以
