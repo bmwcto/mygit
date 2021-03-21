@@ -102,6 +102,6 @@
   ```
 ### 检测有效性：
 
-- 使用curl检测http：`$ curl -v -x http://127.0.0.1:442 ifconfig.pro`
+- 使用curl检测http：`curl -v -x http://127.0.0.1:442 ifconfig.pro`
 
 - 使用curl检测socks5:`curl -v -x socks5://127.0.0.1:443 ifconfig.pro`
