@@ -44,3 +44,21 @@
 
    - 只需要http代理，在 `/etc/opkg.conf`，添类似以下信息：
    - `option http_proxy http://10.0.0.1:3800/`
+
+### [安装Curl](https://openwrt.org/packages/pkgdata/curl)
+
+   - 跑了一天之后，意外的发现竟然没有Curl，用 `opkg update && opkg install curl` 也没能安装，经过摸索，竟然需要离线安装。
+
+   - 查看架构：`opkg print-architecture | awk '{print $2}' | grep -v all | grep -v noarch `  
+
+      ```cd /tmp
+      wget http://downloads.openwrt.org/releases/packages-18.06/mips_24kc/base/libmbedtls_2.16.8-1_mips_24kc.ipk
+
+      wget http://downloads.openwrt.org/releases/packages-18.06/mips_24kc/base/libcurl_7.60.0-4_mips_24kc.ipk
+
+      wget http://downloads.openwrt.org/releases/packages-18.06/mips_24kc/base/curl_7.60.0-4_mips_24kc.ipk
+
+      opkg install ./libmbedtls_2.16.8-1_mips_24kc.ipk
+      opkg install ./libcurl_7.60.0-4_mips_24kc.ipk
+      opkg install ./curl_7.60.0-4_mips_24kc.ipk
+      ```
