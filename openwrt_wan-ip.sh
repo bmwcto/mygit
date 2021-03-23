@@ -16,8 +16,10 @@ chat_id="YOUR Telegram ID"
 # Shell路径
 SHELL_FOLDER=$(dirname $(readlink -f "$0"))
 
-# PPPOE拨号出来的WAN口数据量
-WanData=$(ifconfig pppoe-wan |awk 'NR==7 {print $0}')
+# PPPOE拨号出来的WAN口数据量,除去行首空格
+#WanData=$(ifconfig pppoe-wan |awk 'NR==7 {print $0}')
+#WanData=$(ifconfig pppoe-wan |awk 'NR==7 {print}')|sed 's/^[ ]*//g'
+WanData=$(ifconfig pppoe-wan |awk 'NR==7 {gsub(/^\s+|\s+$/, "");print}')
 
 # PPPOE拨号出来的WAN口IP
 WanIP=$(ifconfig pppoe-wan |awk -F '[ :]+' 'NR==2 {print $4}')
@@ -43,7 +45,7 @@ senddata(){
         WanDatareport="%0A ====#WANDATA======= \
         %0A${WanData} \
         %0A ===========[WANDATA](https://ip.sb/ip/$WanIP)"
-        curl -x socks5h://10.0.0.250:443 -s -X POST https://api.telegram.org/bot$api_key/sendMessage -d chat_id=$chat_id -d text="$WanData" -d parse_mode="markdown" -d disable_web_page_preview="true"> /dev/null
+        curl -x socks5h://10.0.0.250:443 -s -X POST https://api.telegram.org/bot$api_key/sendMessage -d chat_id=$chat_id -d text="$WanDatareport" -d parse_mode="markdown" -d disable_web_page_preview="true"> /dev/null
         exit 0
 }
 
