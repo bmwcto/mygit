@@ -69,7 +69,7 @@ sendip(){
                 %0A${WanIP}:1986 \
                 %0A ===========[LDIP](https://ip.sb/ip/$WanIP)"
                 curl -x socks5h://10.0.0.250:443 -s -X POST https://api.telegram.org/bot$api_key/sendMessage -d chat_id=$chat_id -d text="$WANIPreport" -d parse_mode="markdown" -d disable_web_page_preview="true"> /dev/null
-                echo "$WanIP" > last_ip.txt
+                echo "$WanIP" > $WanlastIpFile
         fi
 }
 
