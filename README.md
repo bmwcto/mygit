@@ -1,7 +1,18 @@
 # mygit
-克隆到本地
-
+克隆到本地  
 `git clone git@github.com:bmwcto/mygit.git`
+
+## 切换协议
+
+1. 查看当前remote  
+`git remote -v`
+
+2. 切换到http：  
+`git remote set-url https://github.com/username/repository.git`
+
+3. 切换到ssh：  
+`git remote set-url git@github.com:username/repository.git`
+
 
 ## update by myphone
 ## update by myphone test
@@ -14,7 +25,7 @@ $ cat ~/.ssh/config
 Host github.com
    HostName github.com
    User git
-   ProxyCommand ncat --proxy 127.0.0.1:1080 --proxy-type socks5 %h %p
+   ProxyCommand /usr/bin/nc --proxy 127.0.0.1:1080 --proxy-type socks5 %h %p
 ```
 
 
