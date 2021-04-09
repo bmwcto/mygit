@@ -57,4 +57,10 @@
     禁止所有IP连接80端口： `sudo iptables -I FORWARD -p tcp --dport 80 -j DROP`  
     开放192.168.1.2连接80端口： `sudo iptables -I FORWARD -s 192.168.1.2 -p tcp --dport 80 -j ACCEPT`  
     ipset的导出、删除、还原：`$ sudo ipset save banthis -f banthis.txt $ sudo ipset destroy banthis $ sudo ipset restore -f banthis.txt`    
-    
+
+
+- 使用sed去掉注释行以及空行：  
+    `sed '/^$/d;/^#/d' ~/.zshrc`  
+
+- 使用sed去掉以#开头的注释：  
+    `sed "s/^#//g" test.txt`
