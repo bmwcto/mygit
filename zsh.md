@@ -32,6 +32,11 @@
     ZSH_THEME="0myamuse"
     #配置程序别名
     alias fuck=/usr/bin/proxychains4
+    #设置保存历史记录的最多条数为100万
+    HISTSIZE=10000000
+    SAVEHIST=10000000
+    #设置历史记录输出的默认日期时间格式
+    export HIST_STAMPS="yyyy-mm-dd"
     ```
 
 6. 应用配置  
