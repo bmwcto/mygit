@@ -56,5 +56,5 @@
     替换FORWARD第1条： `sudo iptables -R FORWARD 1 -m set --match-set banthis src -p tcp --destination-port 80 -j DROP -m comment --comment "Test web3"`  
     禁止所有IP连接80端口： `sudo iptables -I FORWARD -p tcp --dport 80 -j DROP`  
     开放192.168.1.2连接80端口： `sudo iptables -I FORWARD -s 192.168.1.2 -p tcp --dport 80 -j ACCEPT`  
-    
+    ipset的导出、删除、还原：`$ sudo ipset save banthis -f banthis.txt $ sudo ipset destroy banthis $ sudo ipset restore -f banthis.txt`    
     
