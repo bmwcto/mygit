@@ -18,7 +18,7 @@ if not exist %STATUS_DIR% mkdir %STATUS_DIR%
 :loop1
 for /f "tokens=1-3 delims=:." %%a in ('powershell -command "Get-Date -Format 'HH:mm:ss.fff'"') do set nowhh=%%a
 :: 去除可能的前导零（避免08被误认为八进制）
-set /a nowhh=!nowhh!
+if "%nowhh:~0,1%"=="0" set "nowhh=%nowhh:~1%"
 cls&echo.
 echo 当前[!nowhh!]执行loop1，%time%
 timeout /t 5 >nul
