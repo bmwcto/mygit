@@ -7,7 +7,7 @@ param (
     [string]$arg
 )
 
-$mo = "by LC at 01:13 2025/4/25"
+$mo = "by LC at 14:11 2025/4/28"
 $scriptName = [System.IO.Path]::GetFileName([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 function Ensure-Admin {
@@ -28,6 +28,8 @@ function Show-Help {
     Write-Host "  $scriptName remove outlook|rust"
     Write-Host "  $scriptName kill foxmail"
     Write-Host "  $scriptName update WorkWeChat|foxmail"
+    Write-Host "  $scriptName addwifi localhost|guest"
+    Write-Host "  $scriptName clearwifi localhost|guest"
 }
 
 
@@ -75,7 +77,6 @@ function Download-And-Run {
         Write-Warning "下载失败，请检查你的网络..."
     }
 }
-
 
 function Remove-App($name) {
     switch ($name.ToLower()) {
@@ -134,6 +135,87 @@ function Update-App($name) {
     }
 }
 
+function Add-And-ConnectWiFi {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$SSID,
+        [Parameter(Mandatory = $true)]
+        [string]$Password
+    )
+
+    $ProfileXml = @"
+<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+    <name>$SSID</name>
+    <SSIDConfig>
+        <SSID>
+            <name>$SSID</name>
+        </SSID>
+    </SSIDConfig>
+    <connectionType>ESS</connectionType>
+    <connectionMode>manual</connectionMode>
+    <MSM>
+        <security>
+            <authEncryption>
+                <authentication>WPA2PSK</authentication>
+                <encryption>AES</encryption>
+                <useOneX>false</useOneX>
+            </authEncryption>
+            <sharedKey>
+                <keyType>passPhrase</keyType>
+                <protected>false</protected>
+                <keyMaterial>$Password</keyMaterial>
+            </sharedKey>
+        </security>
+    </MSM>
+</WLANProfile>
+"@
+
+    $ProfilePath = "$env:TEMP\$SSID.xml"
+    $ProfileXml | Out-File -Encoding UTF8 -FilePath $ProfilePath
+
+    netsh wlan add profile filename="$ProfilePath" | Out-Null
+    netsh wlan connect name="$SSID" | Out-Null
+
+    Remove-Item $ProfilePath -Force
+    Write-Host "已连接到 Wi-Fi：$SSID"
+}
+
+function Remove-WiFiProfile {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$SSID
+    )
+    netsh wlan delete profile name="$SSID" | Out-Null
+    Write-Host "已删除配置文件：$SSID"
+}
+
+# 连接指定WIFI
+function Add-WiFi($name) {
+    switch ($name.ToLower()) {
+        "localhost" {
+            Add-And-ConnectWiFi -SSID "localhost" -Password "localhostPASS"
+        }
+        "guest" {
+            Add-And-ConnectWiFi -SSID "localhost_Guest" -Password "GuestPASS"
+        }
+        default { Show-Help }
+    }
+}
+
+# 清除指定WIFI
+function Clear-WiFi($name) {
+    switch ($name.ToLower()) {
+        "localhost" {
+                Remove-WiFiProfile -SSID "localhost"
+        }
+        "guest" {
+                Remove-WiFiProfile -SSID "localhost_Guest"
+         }
+        default { Show-Help }
+    }
+}
+
 # ========== 主逻辑入口 ==========
 # Write-Host "`n$mo`n"
 # https://work.weixin.qq.com/wework_admin/commdownload?platform=win
@@ -177,7 +259,11 @@ switch ($cmd.ToLower()) {
     "update" {
         if ($arg) { Update-App $arg } else { Show-Help }
     }
-    default {
-        Show-Help
+    "addwifi" {
+        if ($arg) { Add-WiFi $arg } else { Show-Help }
     }
+    "clearwifi" {
+        if ($arg) { Clear-WiFi $arg } else { Show-Help }
+    }
+    default { Show-Help }
 }
