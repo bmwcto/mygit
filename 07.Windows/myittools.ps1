@@ -30,27 +30,27 @@ function Show-Help {
     Write-Host "  $scriptName update WorkWeChat|foxmail"
     Write-Host "  $scriptName addwifi Local|guest"
     Write-Host "  $scriptName clearwifi Local|guest"
-    Write-Host "  $scriptName sys dis-mspaper|en-mspaper|off-mspaper|on-mspaper"
+    Write-Host "  $scriptName sys mspaper-dis|mspaper-en|mspaper-off|mspaper-no"
 }
 
 function WindowsSpotlightFeatures-Set($name) {
     switch ($name.ToLower()) {
-        "dis-mspaper" {
+        "mspaper-dis" {
         #完全禁用Windows聚焦
         #reg add HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\CloudContent  /v DisableWindowsSpotlightFeatures /d 1 /f
             Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsSpotlightFeatures" -Value 1 -Type DWord
         }
-        "en-mspaper" {
+        "mspaper-en" {
         #启用Windows聚焦
         #reg delete HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\CloudContent  /v DisableWindowsSpotlightFeatures /f
             Remove-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsSpotlightFeatures" -ErrorAction SilentlyContinue
         }
-        "off-mspaper" {
+        "mspaper-off" {
         #关闭Windows聚焦
         #reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings /v EnabledState /t REG_DWORD /d 0 /f
            Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings" -Name "EnabledState" -Value 0 -Type DWord
         }
-        "on-mspaper" {
+        "mspaper-on" {
         #设置Windows聚焦
         #reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings /v EnabledState /t REG_DWORD /d 1 /f
             Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings" -Name "EnabledState" -Value 1 -Type DWord
