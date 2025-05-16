@@ -1,13 +1,13 @@
 # PowerShell 脚本 by LC at 21:57 2025/4/23
 # 为了方便管理内部Windows，使用PowerShell写的一个命令行工具，慢慢扩展、完善
-# 使用【Invoke-ps2exe .\myittools.ps1 -outputFile .\myittools.exe -title myit -description "LC's Tools" -company "LSMR" -version "0.0.0.5"】转换成exe，然后带参数使用
+# 使用【Invoke-ps2exe .\myittools.ps1 -outputFile .\myittools.exe -title myittools -description "LC's Tools" -company "LSMR" -version "0.0.0.9"】转换成exe，然后带参数使用
 
 param (
     [string]$cmd,
     [string]$arg
 )
 
-$mo = "by LC at 14:11 2025/4/28"
+$mo = "by LC at 15:22 2025/5/16"
 $scriptName = [System.IO.Path]::GetFileName([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 function Ensure-Admin {
@@ -22,16 +22,42 @@ function Ensure-Admin {
 }
 
 function Show-Help {
-    Write-Host "`n$mo`n"
+    Write-Host "`n$mo`n" -ForegroundColor Yellow
     Write-Host "Usage:"
-    Write-Host "  $scriptName a|g|new7z|newworkwechat"
-    Write-Host "  $scriptName remove outlook|rust"
+    Write-Host "  $scriptName a|g|new7z|newworkwechat|wifi"
+    Write-Host "  $scriptName remove outlook|rust|vnc"
     Write-Host "  $scriptName kill foxmail"
     Write-Host "  $scriptName update WorkWeChat|foxmail"
-    Write-Host "  $scriptName addwifi localhost|guest"
-    Write-Host "  $scriptName clearwifi localhost|guest"
+    Write-Host "  $scriptName addwifi Local|guest"
+    Write-Host "  $scriptName clearwifi Local|guest"
+    Write-Host "  $scriptName sys dis-mspaper|en-mspaper|off-mspaper|on-mspaper"
 }
 
+function WindowsSpotlightFeatures-Set($name) {
+    switch ($name.ToLower()) {
+        "dis-mspaper" {
+        #完全禁用Windows聚焦
+        #reg add HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\CloudContent  /v DisableWindowsSpotlightFeatures /d 1 /f
+            Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsSpotlightFeatures" -Value 1 -Type DWord
+        }
+        "en-mspaper" {
+        #启用Windows聚焦
+        #reg delete HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\CloudContent  /v DisableWindowsSpotlightFeatures /f
+            Remove-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsSpotlightFeatures" -ErrorAction SilentlyContinue
+        }
+        "off-mspaper" {
+        #关闭Windows聚焦
+        #reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings /v EnabledState /t REG_DWORD /d 0 /f
+           Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings" -Name "EnabledState" -Value 0 -Type DWord
+        }
+        "on-mspaper" {
+        #设置Windows聚焦
+        #reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings /v EnabledState /t REG_DWORD /d 1 /f
+            Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\DesktopSpotlight\Settings" -Name "EnabledState" -Value 1 -Type DWord
+        }
+        default { Show-Help }
+    }
+}
 
 function Download-And-Run {
     param (
@@ -88,6 +114,14 @@ function Remove-App($name) {
             $exe = "C:\Program Files\RustDesk\rustdesk.exe"
             if (Test-Path $exe) {
                 & $exe --uninstall > $null 2>&1
+            }
+        }
+        "vnc" {
+            $exe = "D:\soft\test.exe"
+            if (Test-Path $exe) {
+                & $exe --uninstall > $null 2>&1
+                #del /q /f $exe
+                Remove-Item -Path $exe -Force -ErrorAction SilentlyContinue
             }
         }
         default { Show-Help }
@@ -193,11 +227,11 @@ function Remove-WiFiProfile {
 # 连接指定WIFI
 function Add-WiFi($name) {
     switch ($name.ToLower()) {
-        "localhost" {
-            Add-And-ConnectWiFi -SSID "localhost" -Password "localhostPASS"
+        "Local" {
+            Add-And-ConnectWiFi -SSID "Local" -Password "12345678"
         }
         "guest" {
-            Add-And-ConnectWiFi -SSID "localhost_Guest" -Password "GuestPASS"
+            Add-And-ConnectWiFi -SSID "Local_Guest" -Password "88888888"
         }
         default { Show-Help }
     }
@@ -206,12 +240,12 @@ function Add-WiFi($name) {
 # 清除指定WIFI
 function Clear-WiFi($name) {
     switch ($name.ToLower()) {
-        "localhost" {
-                Remove-WiFiProfile -SSID "localhost"
+        "Local" {
+                Remove-WiFiProfile -SSID "Local"
         }
         "guest" {
-                Remove-WiFiProfile -SSID "localhost_Guest"
-         }
+                Remove-WiFiProfile -SSID "Local_Guest"
+        }
         default { Show-Help }
     }
 }
@@ -228,8 +262,8 @@ switch ($cmd.ToLower()) {
         }
     }
     "g" {
-        if (Test-Connection -Count 2 -Quiet -ComputerName "db.localhost.cn") {
-            Download-And-Run -Url "http://db.localhost.cn/myit/it-help.md"
+        if (Test-Connection -Count 2 -Quiet -ComputerName "db.Local.cn") {
+            Download-And-Run -Url "http://db.Local.cn/myittools/it-help.md"
         }
     }
     "new7z" {
@@ -250,6 +284,9 @@ switch ($cmd.ToLower()) {
             Download-And-Run -Url "https://work.weixin.qq.com/wework_admin/commdownload?platform=win" -Install
         }
     }
+    "wifi" {
+        start ms-settings:network-wifisettings
+    }
     "remove" {
         if ($arg) { Remove-App $arg } else { Show-Help }
     }
@@ -264,6 +301,9 @@ switch ($cmd.ToLower()) {
     }
     "clearwifi" {
         if ($arg) { Clear-WiFi $arg } else { Show-Help }
+    }
+    "sys" {
+        if ($arg) { WindowsSpotlightFeatures-Set $arg } else { Show-Help }
     }
     default { Show-Help }
 }
