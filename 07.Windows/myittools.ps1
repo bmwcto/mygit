@@ -1,13 +1,13 @@
 # PowerShell 脚本 by LC at 21:57 2025/4/23
 # 为了方便管理内部Windows，使用PowerShell写的一个命令行工具，慢慢扩展、完善
-# 使用【Invoke-ps2exe .\myittools.ps1 -outputFile .\myittools.exe -title myittools -description "LC's Tools" -company "LSMR" -version "0.0.0.9"】转换成exe，然后带参数使用
+# 使用【Invoke-ps2exe .\myittools.ps1 -outputFile .\myittools.exe -title myittools -description "LC's Tools" -company "LSMR" -version "0.0.0.12"】转换成exe，然后带参数使用
 
 param (
     [string]$cmd,
     [string]$arg
 )
 
-$mo = "by LC at 15:22 2025/5/16"
+$mo = "by LC at 17:22 2025/07/02"
 $scriptName = [System.IO.Path]::GetFileName([System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName)
 
 function Ensure-Admin {
@@ -16,7 +16,7 @@ function Ensure-Admin {
         Write-Host "`n$mo`n" -ForegroundColor Yellow
         Write-Host "Please Use Administrator Permissions!" -ForegroundColor Red
         Write-Host (Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-        Pause
+        #Pause
         Exit
     }
 }
@@ -119,9 +119,10 @@ function Remove-App($name) {
         "vnc" {
             $exe = "D:\soft\test.exe"
             if (Test-Path $exe) {
-                & $exe --uninstall > $null 2>&1
+                & $exe -uninstallservice > $null 2>&1
                 #del /q /f $exe
                 Remove-Item -Path $exe -Force -ErrorAction SilentlyContinue
+				Remove-Item -Path "D:\soft\ultravnc.ini" -Force -ErrorAction SilentlyContinue
             }
         }
         default { Show-Help }
