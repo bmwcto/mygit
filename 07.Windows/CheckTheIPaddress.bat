@@ -13,6 +13,7 @@ title 检测【%IP_LIST%】状态
 :: 状态文件保存目录
 set "STATUS_DIR=status"
 set INTERVAL=300
+set "local=at BeiJing"
 
 if not exist %STATUS_DIR% mkdir %STATUS_DIR%
 :loop1
@@ -55,7 +56,7 @@ for %%I in (%IP_LIST%) do (
         echo %time%-!IP! 状态变化：!LAST! -> !CUR!
 
         :: 替换下面地址为你的服务端地址
-        curl -H "Content-Type: application/json" -X POST https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx -d "{\"msgtype\": \"text\", \"text\": {\"content\": \"[%time%]-[!ip!]-[!CUR!]\"}}"
+        curl -H "Content-Type: application/json" -X POST https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx -d "{\"msgtype\": \"text\", \"text\": {\"content\": \"[%time%]-[!ip!]-[!CUR!]-[!local!]\"}}"
 	cls&echo.&&echo 每【%INTERVAL%】秒检测一次状态
         :: 更新状态文件
         copy /Y "!CUR_STATUS_FILE!" "!LAST_STATUS_FILE!" >nul
