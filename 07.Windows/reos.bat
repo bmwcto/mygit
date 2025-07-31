@@ -33,11 +33,16 @@ set "w_wim_url=http://1.1.1.1/REPE.w64"
 set "sha1_x_SDI_file=e06e0fa5403ea1fe426ac782bc502574f1765c87"
 set "sha1_x_wim_file=df9b9e93098ae4607b6670297f2f88dc949ed721"
 
+set "wx_botkey=xxx"
+
 set "SDI_file=%pe_PARTITION%:\%pe_path%\%pe_SDI%"
 set "wim_file=%pe_PARTITION%:\%pe_path%\%pe_WIM%"
 
+set "win_wim_file=%pe_PARTITION%:\%pe_path%\WIN.WIM"
+
 if not exist %pe_PARTITION%:\ echo 目标盘符不存在，请重新选择或手动创建...&&timeout /t 5 >Nul&&goto menu
 if not exist %pe_PARTITION%:\%pe_path% mkdir %pe_PARTITION%:\%pe_path%
+
 :minimenu
 cls&color 0a
 echo ============================================================
@@ -50,13 +55,13 @@ echo 	4. 启动到本地PE
 echo 	5. 备份全部驱动程序并启动Dism++
 echo 	6. 备份全部及网络驱动程序并启动到本地PE
 echo 	E. 退出
-echo 	A. Down-Win.WIM
+echo 	A. Download-【%win_wim_file%】
 echo 	0. 手动分区或检查分区
 echo ============================================================
 choice /C:123456ea0 /N /T 30 /D e /M 选择执行项目【30秒后默认退出】：
 set _erl=%errorlevel%
 if %_erl%==9 diskmgmt.msc
-if %_erl%==8 if not exist E:\%pe_path% curl -o %pe_PARTITION%:\%pe_path%\WIN.WIM %db_win_wim_url%&&goto minimenu
+if %_erl%==8 if not exist %win_wim_file% curl -o %win_wim_file% %db_win_wim_url%&&goto minimenu
 if %_erl%==7 exit
 if %_erl%==6 goto AllAndExeWinPE
 if %_erl%==5 goto AllAndExeDismPlusPlus
@@ -84,8 +89,6 @@ call :DismPlusPlus
 goto minimenu
 
 :AllAndExeWinPE
-if not exist %SDI_file% cls&color 0c&echo.&echo 未找到PE关键文件【%SDI_file%】..&timeout /t 2 >Nul&&goto AllAndExeWinPE
-if not exist %wim_file% echo 未找到PE关键文件【%wim_file%】..&timeout /t 2 >Nul&&goto DownWim
 call :BackupAllDrivers
 call :BackupNetDrivers
 call :ExeWinPE
@@ -137,6 +140,7 @@ echo @echo off
 echo title 如需继续操作PE，请手动关闭此窗口
 echo setlocal enabledelayedexpansion
 echo if not defined terminal mode 78, 30
+echo ping -n 2 qyapi.weixin.qq.com^&^&curl -H "Content-Type: application/json" -X POST https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=%wx_botkey% -d "{\"msgtype\": \"text\", \"text\": {\"content\": \"[%%time%%]-[%%computername%%]-[Ready]\"}}"
 echo color 0c
 echo echo.
 echo echo 【请手动关闭本脚本，如无操作，666秒后即自动重启】
@@ -164,6 +168,8 @@ if %_erl%==1 curl -k -o %wim_file% %w_wim_url%
 goto ExeWinPE
 
 :ExeWinPE
+if not exist %SDI_file% cls&color 0c&echo.&echo 未找到PE关键文件【%SDI_file%】..&timeout /t 2 >Nul&&goto minimenu
+if not exist %wim_file% echo 未找到PE关键文件【%wim_file%】..&timeout /t 2 >Nul&&goto DownWim
 call :Save_lc_bat
 echo.
 choice /C:YNE /N /T 10 /D N /M 请选择是否校验SHA1(Y、N、E)【10秒后默认N、按E退出】
