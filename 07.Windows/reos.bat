@@ -1,5 +1,16 @@
 @echo off
 rem 为便于远程维护从本地一次性启动PE创建的一个PE及驱动备份等操作的启动器程序
+setlocal EnableDelayedExpansion
+rem 1. 先假设是 UTF-8，切到 65001
+chcp 65001 > nul
+rem 2. 用左双引号“作为探测字符（UTF-8下是1个字符，GBK下是3个乱码字符）
+set "utf8_probe=“"
+rem 3. 计算当前解释出来的字符长度
+set "len=0"
+for /l %%i in (0,1,10) do if not "!utf8_probe:~%%i,1!"=="" set /a len+=1
+rem 4. 如果长度不是1，说明实际编码是GBK，切回936
+if not "%len%"=="1" chcp 936 > nul
+
 rem Get admin permissions.
 cd /d "%~dp0" && ( if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs" ) && fsutil dirty query %systemdrive% 1>nul 2>nul || (  cmd /u /c echo Set UAC = CreateObject^("Shell.Application"^) : UAC.ShellExecute "cmd.exe", "/k cd ""%~sdp0"" && ""%~s0"" %Apply%", "", "runas", 1 >> "%temp%\getadmin.vbs" && "%temp%\getadmin.vbs" && exit /B )
 title LC's REOS Tools 【9:21 2025/7/30】
