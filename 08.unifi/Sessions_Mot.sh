@@ -4,7 +4,7 @@
 # 使用watch -n 2 "./Sessions_Mot.sh 10"，即每2秒执行并输出前10的连接。
 # --- 变量定义 ---
 WAN1_IP="1.1.1.1"
-WAN2_IP="1.1.2.2"
+WAN2_IP=$(ifconfig eth9 | awk '/inet / {print $2}')
 
 # 默认显示前5名，可以传入脚本第一个参数更改
 TOP_N=${1:-5}
