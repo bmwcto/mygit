@@ -5,18 +5,44 @@
 # --- 变量定义 ---
 WAN1_IP="1.1.1.1"
 WAN2_IP="1.1.2.2"
+
 # 默认显示前5名，可以传入脚本第一个参数更改
 TOP_N=${1:-5}
 
 # 核心统计函数：统计连接到指定WAN IP的ESTABLISHED会话中，原始源IP的连接数排名
 # 参数1: 目标WAN IP地址 (例如: 1.1.1.1)
 # 参数2: 排名前N (默认: 5)
+# ---------------------------------------------------------
+# 新增函数：统计去重后的原始源 IP 总数 (即设备数量)
+# ---------------------------------------------------------
+function count_unique_src_ips() {
+    local target_ip=${1}
+
+    # 逻辑与之前类似，但最后使用 sort -u (去重) 和 wc -l (计数)
+    conntrack -L 2>/dev/null \
+    | grep "ESTABLISHED" \
+    | grep "${target_ip}" \
+    | awk '{
+        for(i=1;i<=NF;i++) {
+            if($i ~ /^src=/) {
+                print substr($i, 5);
+                break;
+            }
+        }
+    }' \
+    | sort -u \
+    | wc -l
+}
+
 function count_top_src_ips() {
     local target_ip=${1}
     local top_n=${2:-5}
+    # 这里我们可以在内部调用上面的函数，把总数显示在标题里
+    local total_devices=$(count_unique_src_ips "$target_ip")
 
     echo "=== 正在统计连接到 ${target_ip} 且处于【已建立】(ESTABLISHED) 状态的会话 ==="
-    echo "=== 显示排名前 ${top_n} 的原始源 IP 地址 ==="
+    #echo "=== 显示排名前 ${top_n} 的原始源 IP 地址 ==="
+    echo "=== 原始源 IP 总数(设备数): ${total_devices} 个 | 显示前 ${top_n} 名 ==="
 
     # 核心统计逻辑：
     # 1. conntrack -L 2>/dev/null: 运行conntrack，并将stderr（版本信息等）重定向到/dev/null
@@ -68,7 +94,6 @@ echo "------------------------------------"
 
 # 3. 系统信息
 top -b -n 1 | head -n 6
-echo "------------------------------------"
 sensors | grep "Board Temp" | awk '{printf "Board Temp：%s\n", $3}'
 echo "------------------------------------"
 
