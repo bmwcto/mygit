@@ -12,6 +12,8 @@
 #如果你输入了不存在的接口（如 eth99），它会显示 [接口不存在]。
 #如果接口存在但没拨号成功（没 IP），它会显示 [未连接/无IP]。
 
+#与运营商设备对齐状态，包含udp
+
 # --- 1. 参数解析与默认值 ---
 INTERFACES=("eth9")
 TOP_N=5
@@ -61,7 +63,7 @@ function get_ip() {
 function filter_conntrack() {
     local target_ip=$1
     conntrack -L 2>/dev/null \
-    | grep -E "ESTABLISHED|SYN_RECV|SYN_SENT" \
+    | grep -E "ESTABLISHED|SYN_RECV|SYN_SENT|udp" \
     | grep "${target_ip}" \
     | awk '{
         for(i=1;i<=NF;i++) {
