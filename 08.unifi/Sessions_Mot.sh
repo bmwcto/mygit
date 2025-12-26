@@ -2,9 +2,13 @@
 # 可执行：chmod +x Sessions_Mot.sh
 # 使用watch -n 1 "./Sessions_Mot.sh"，即每秒执行并默认输出前5的连接。
 # 使用watch -n 2 "./Sessions_Mot.sh 10"，即每2秒执行并输出前10的连接。
+
+#!/bin/bash
+
 # --- 变量定义 ---
-WAN1_IP="1.1.1.1"
+WAN1_IP=$(ifconfig ppp2 | awk '/inet / {print $2}')
 WAN2_IP=$(ifconfig eth9 | awk '/inet / {print $2}')
+WAN4_IP=$(ifconfig eth1 | awk '/inet / {print $2}')
 
 # 默认显示前5名，可以传入脚本第一个参数更改
 TOP_N=${1:-5}
@@ -79,17 +83,45 @@ function count_top_src_ips() {
 
 WAN1_ESTABLISHED=$(conntrack -L 2>/dev/null | grep "ESTABLISHED" | grep -c "src=$WAN1_IP\|dst=$WAN1_IP")
 WAN2_ESTABLISHED=$(conntrack -L 2>/dev/null | grep "ESTABLISHED" | grep -c "src=$WAN2_IP\|dst=$WAN2_IP")
-
-echo "--- 实时活动会话数 (ESTABLISHED) ---"
-echo "WAN1 Sessions (GUEST): $WAN1_ESTABLISHED"
-echo "WAN2 Sessions (OFFICE): $WAN2_ESTABLISHED"
-echo "------------------------------------"
+WAN4_ESTABLISHED=$(conntrack -L 2>/dev/null | grep "ESTABLISHED" | grep -c "src=$WAN4_IP\|dst=$WAN4_IP")
 
 # 2. 统计全部会话总数 (解决输出问题：通过重定向 stderr 和 awk 筛选解决)
 # conntrack -L | wc -l 会输出两个数字：版本信息中的计数 和 wc -l 的计数
 # 使用 awk '{print $1}' 可以确保只输出 wc -l 的最终计数
+
+# 1. 计算所有 WAN 口实时活动会话的总和
+TOTAL_ESTABLISHED_SESSIONS=$((WAN1_ESTABLISHED + WAN2_ESTABLISHED + WAN4_ESTABLISHED))
+
+# 2. 计算正在连接到外部网络的去重设备总数 (汇总所有 WAN 口的唯一源 IP)
+# 我们利用之前定义的 count_unique_src_ips 逻辑，但一次性针对所有出口 IP 进行统计
+all_total_devices=$(conntrack -L 2>/dev/null \
+    | grep "ESTABLISHED" \
+    | grep -E "(${WAN1_IP}|${WAN2_IP}|${WAN4_IP})" \
+    | awk '{
+        for(i=1;i<=NF;i++) {
+            if($i ~ /^src=/) {
+                print substr($i, 5);
+                break;
+            }
+        }
+    }' \
+    | sort -u \
+    | wc -l)
+
+date
+echo "--- 实时活动会话总数：[${TOTAL_ESTABLISHED_SESSIONS}] ---"
+echo "WAN1 Sessions (WAN1): $WAN1_ESTABLISHED"
+echo "WAN2 Sessions (WAN2): $WAN2_ESTABLISHED"
+echo "WAN4 Sessions (WAN3): $WAN4_ESTABLISHED"
+echo "------------------------------------"
+
+# 新增，实时活动会话总数TOTAL_ESTABLISHED_SESSIONS
+# 新增，正在连接到外部网络的设备总数: ${all_total_devices}
+
 TOTAL_SESSIONS=$(conntrack -L 2>/dev/null | wc -l)
 echo "全部会话总数 (包含关闭中): ${TOTAL_SESSIONS}"
+echo
+echo "当前会话设备总数: ${all_total_devices}"
 echo "------------------------------------"
 
 # 3. 系统信息
@@ -101,5 +133,9 @@ echo "------------------------------------"
 count_top_src_ips "$WAN1_IP" "$TOP_N"
 echo "------------------------------------"
 
+
 # 5. 调用函数统计 WAN2
 count_top_src_ips "$WAN2_IP" "$TOP_N"
+
+# 5. 调用函数统计 WAN4
+count_top_src_ips "$WAN4_IP" "$TOP_N"
