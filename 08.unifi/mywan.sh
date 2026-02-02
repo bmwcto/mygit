@@ -23,3 +23,17 @@ if [ "$CURRENT_IP" != "$OLD_IP" ]; then
     curl -H "Content-Type: application/json" -X POST https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx -d '{"msgtype": "text", "text": {"content": "'"${mytxt}"'"}}' >/dev/null 2>&1 &
     echo "$CURRENT_IP" > "$IP_FILE"
 fi
+
+#in VyOS set task-scheduler
+#chmod +x /config/myssh/mywan.sh
+#configure
+#set system task-scheduler task loop_mywanip executable path /config/myssh/mywan.sh
+##set system task-scheduler task loop_mywanip crontab-spec '*/5 * * * *'
+#set system task-scheduler task loop_mywanip interval 5m
+#commit
+#save
+#exit
+
+#configure
+#show system task-scheduler
+#delete system task-scheduler task <TASKNAME> and then commit save
