@@ -33,5 +33,6 @@ curl https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx-d "{\"msgtype\": \
     -  51：最低画质模式（画面严重打块，体积最小）。
     -  (注：数值越小，画质越高、文件越大；数值越大，画质越低、文件越小。通常建议设置在 18 – 28 之间。)
   * 2.4、然后直接拖进原来的zip的pptx文件中覆盖原来的视频文件，把.zip后缀去掉，变回.pptx文件即可获得压缩后的pptx文件
+
 3、笔记本电源在安装完Windows系统后，很多性能都是默认中等，如果调整就需要手动去滑动电池图标的滑块来调整，如果使用命令行调整的话，容易权限不足，所以调用任务计划中的SYSTEM权限进行调整：
-* ```schtasks /create /tn "SetPowerOverlay" /tr "cmd.exe /c reg add HKLM\System\CurrentControlSet\Control\Power\User\PowerSchemes /v ActiveOverlayAcPowerScheme /t REG_SZ /d ded574b5-45a0-4f42-8737-46345c09c238 /f" /sc ONCE /st 00:00 /ru "NT AUTHORITY\SYSTEM" /f && schtasks /run /tn "SetPowerOverlay" && timeout /t 1 /nobreak >nul && schtasks /delete /tn "SetPowerOverlay" /f```
+  * ```schtasks /create /tn "SetPowerOverlay" /tr "cmd.exe /c reg add HKLM\System\CurrentControlSet\Control\Power\User\PowerSchemes /v ActiveOverlayAcPowerScheme /t REG_SZ /d ded574b5-45a0-4f42-8737-46345c09c238 /f" /sc ONCE /st 00:00 /ru "NT AUTHORITY\SYSTEM" /f && schtasks /run /tn "SetPowerOverlay" && timeout /t 1 /nobreak >nul && schtasks /delete /tn "SetPowerOverlay" /f```
