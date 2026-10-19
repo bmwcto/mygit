@@ -16,6 +16,17 @@ powershell -NoProfile -Command "iwr 'https://qyapi.weixin.qq.com/cgi-bin/webhook
 curl https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx-d "{\"msgtype\": \"text\",\"text\": {\"content\": \"[%time%]-[%computername%]-[%username%]-[xxx"]\"}}"
 ```
 
+## 流程图
+
+```mermaid
+flowchart LR
+    A["地图选择位置"] --> B{"平台"}
+    B -->|"iOS"| C["Packet Tunnel Extension"]
+    B -->|"macOS"| D["系统 PAC"]
+    C --> E["本地 HTTPS 代理"]
+    D --> E
+    E --> F["仅处理目标定位域名"]
+```
 
 ## 其它笔记
 1、RDCMan.exe更新到Remote Desktop Connection Manager v3.21 版本之后，有一个问题，就是原来添加的server的认证都有可能失效掉，包括本地认证（本地认证还在，单独使用mstsc来连接是没有问题的），解决方案：
