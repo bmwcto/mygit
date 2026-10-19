@@ -28,6 +28,22 @@ flowchart LR
     E --> F["仅处理目标定位域名"]
 ```
 
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```mermaid
+graph TD;
+    我-->你;
+    我-->他;
+    你-->她;
+    他-->她;
+```
+
 ## 其它笔记
 1、RDCMan.exe更新到Remote Desktop Connection Manager v3.21 版本之后，有一个问题，就是原来添加的server的认证都有可能失效掉，包括本地认证（本地认证还在，单独使用mstsc来连接是没有问题的），解决方案：
 * 把出问题的对应的regedit路径这里面的server地址删除掉就行了：
