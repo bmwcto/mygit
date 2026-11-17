@@ -7,6 +7,8 @@ set -Eeuo pipefail
 # 独立服务：xray-vision
 # 不覆盖现有 xray / xray-ui
 # bash -c "$(curl -L https://github.com/bmwcto/mygit/raw/refs/heads/master/00.myss/install-xray-vision.sh)"
+# sudo bash -c "$(curl -x http://127.0.0.1:7891 -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --proxy socks5://127.0.0.1:7890
+# bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
 # ============================================================
 
 # ---------- 可修改变量 ----------
