@@ -423,13 +423,88 @@ HOOK
 
 chmod 750 "$HOOK_FILE"
 
-# ---------- 生成客户端链接 ----------
-log "生成客户端节点链接"
+
+# ---------- 生成客户端配置 ----------
+log "生成客户端节点配置"
 
 NODE_LINK="vless://${UUID}@${DOMAIN}:${XRAY_PORT}?encryption=none&security=tls&type=tcp&flow=xtls-rprx-vision&sni=${DOMAIN}&fp=chrome#XTLS-Vision"
 
 printf '%s\n' "$NODE_LINK" > "$BASE/v2rayng-link.txt"
 chmod 600 "$BASE/v2rayng-link.txt"
+
+CLIENT_CONFIG="$BASE/linux-client.json"
+
+cat > "$CLIENT_CONFIG" <<JSON
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 10809,
+      "protocol": "http",
+      "settings": {}
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "$DOMAIN",
+            "port": $XRAY_PORT,
+            "users": [
+              {
+                "id": "$UUID",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "$DOMAIN",
+          "fingerprint": "chrome",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      },
+      "tag": "proxy"
+    },
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    }
+  ]
+}
+JSON
+
+chmod 600 "$CLIENT_CONFIG"
+
+# 检查客户端配置
+log "检查 Linux 客户端配置"
+
+XRAY_LOCATION_ASSET="$ASSET_DIR" \
+    "$XRAY_BIN" run -test -config "$CLIENT_CONFIG" \
+    || fail "Linux 客户端配置检查失败"
+
 
 # ---------- 最终检查 ----------
 log "执行最终检查"
