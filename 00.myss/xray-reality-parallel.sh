@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # Parallel Xray REALITY + Vision deployment.
 # Keeps the existing xray-vision service and TCP/443 configuration untouched.
+# bash -c "$(curl -L https://github.com/bmwcto/mygit/raw/refs/heads/master/00.myss/xray-reality-parallel.sh)"
+# apt install -y curl unzip vim
+# bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+# sysctl net.ipv4.tcp_congestion_control
+# tee /etc/sysctl.d/99-bbr.conf > /dev/null <<'EOF'
+# net.core.default_qdisc = fq
+# net.ipv4.tcp_congestion_control = bbr
+# EOF
+# sysctl --system
 # Debian/Ubuntu + systemd; requires an already-installed Xray binary with REALITY support.
 set -Eeuo pipefail
 umask 077
